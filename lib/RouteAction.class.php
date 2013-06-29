@@ -24,12 +24,16 @@ class RouteAction{
 		$this -> resolveCommand();
 	}
 	public function resolveCommand(){
+		$RefreshObj = new ActivityModel();
 		switch($this -> paraResult['command']){
 		case 'select':
 			$this -> selectOperate();
 			break;
-		case 'attention':
-			echo "guanzhu";
+		case 'attentionleague':
+			echo $RefreshObj -> attentionLeague($this -> paraResult['userid'], $this -> paraResult['leagueid']);
+			break;
+		case 'attentionactivity':
+			echo $RefreshObj -> attentionactivity($this -> paraResult['userid'], $this -> paraResult['activityid']);
 			break;
 		case 'comment':
 			echo "pinglun";
@@ -56,6 +60,12 @@ class RouteAction{
 			break;
 		case 'activitydetail':
 			echo json_encode($RefreshObj -> getActivityInfo($this -> paraResult['activityid']));
+			break;
+		case 'getleagueactivity':
+			echo $RefreshObj -> getLeagueActivity($this -> paraResult['leagueid']);
+			break;
+		case 'leaguezone':
+			echo json_encode($RefreshObj -> getLeagueInfo($this -> paraResult['leagueid']));
 			break;
 		default: 
 			echo "error";

@@ -56,19 +56,17 @@ class ActivityModel{
 			$rs['league_info'] = $this -> getLeagueInfo($rs['league_id']);
 			if($rs['class'] == 1){
 				$rs['isvote'] = true;
-			        $sql_vote = "select * from `lg_activity_vote` where `id`='".$rs['id']."' limit 1";
-				$query_vote = mysql_query($sql_vote) or die(mysql_error());
+				$sql = "select * form `lg_activity_vote` where `id`='".$rs['id']."' limit 1";
+				$query_vote = mysql_query($sql);
 				$revote = mysql_fetch_array($query_vote);
 				$sql_item = "select * from `lg_activity_vote_item` where `vote_id`='".$revote['id']."'";
 				$query_item = mysql_query($sql_item);
-				$revote['vote_item_info'] = array();
-				while($revote_item = mysql_fetch_array($query_item, MYSQL_ASSOC)){
+				while($revote_item = mysql_fetch_array($query_item)){
 					array_push($revote['vote_item_info'],$revote_item);
 				}
 				$rs['vote_info'] = $revote;
 			}else{
 				$rs['isvote'] = false;
-				$rs['vote_info'] = null;
 			}
 			array_push($result,$rs);
 		}
@@ -153,45 +151,7 @@ class ActivityModel{
 		return json_encode($result);
 		
 	}
-	public function attentionLeague($userid, $leagueid){
-		if($this -> isAttentionLeague($userid, $leagueid))
-			return "error";
-		$sql = "INSERT INTO `lg_attention_league` (user_id, league_id) VALUES ('".$userid."', '".$leagueid."')";
-		mysql_query($sql);
-		return "success";
 
-	}
-	public function isAttentionLeague($userid, $leagueid){
-		$sql = "SELECT * FROM `lg_attention_league` WHERE `user_id` = '".$userid."' AND `league_id` = '".$leagueid."'";
-		$query = mysql_query($sql);
-		if($rs = mysql_fetch_array($query))
-			return true;
-		return false;
-	}
-	public function isAttentionActivity($userid, $activityid){
-		$sql = "SELECT * FROM `lg_attention_activity` WHERE `user_id` = '".$userid."' AND `activity_id` = '".$activityid."'";
-		$query = mysql_query($sql) or die(mysql_error());
-		if($rs =mysql_fetch_array($query))
-			return true;
-		return false;
-	}
-	public function attentionActivity($userid, $activityid){
-		if($this -> isAttentionActivity($userid, $activityid))
-			return "error";
-		$sql = "INSERT INTO `lg_attention_activity` (user_id, activity_id) VALUES ('".$userid."','".$activityid."')";
-		mysql_query($sql);
-		return "success";
-	}
-	public function canVote($voteid, $userid, $userip){
-		$sql = "select * from `lg_activity_vote` where `id` = '".$voteid."'";
-		$query = mysql_query($sql);
-		$rs = mysql_fetch_array($query);
-		$sql_process = "SELECT COUNT(*) FROM `lg_activity_vote_process` WHERE `vote_id` = '".$voteid."' AND `voterid` = '".$userid."' AND `voterip` = '".$userip."'";
-		$vote_num = mysql_query($sql_process);
-		if($vote_num < $rs['avaliable_num'])
-			return true;
-		return false;
-	}
 
 
 
