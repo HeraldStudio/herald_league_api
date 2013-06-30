@@ -21,10 +21,9 @@ class RouteAction{
 		$parameter = $parameter[1];
 		$paraItem = explode('/', $parameter);
 		$paraResult = array();
-		for( $i = 1; isset($paraItem[$i]); $i++ ){
+		for( $i = 1; isset($paraItem[$i+1]); $i++ ){
 			$this -> paraResult[$paraItem[$i]] = $paraItem[++$i];
 		}
-		//print_r($paraResult);
 		$this -> resolveCommand();
 	}
 	public function resolveCommand(){
@@ -33,44 +32,96 @@ class RouteAction{
 			$this -> selectOperate();
 			break;
 		case 'attentionleague':
+			if(!isset($this -> paraResult['userid'])){
+				echo "USERIDERROR";
+				return;
+			}
+			if(!isset($this -> paraResult['leagueid'])){
+				echo "LEAGUEIDERROR";
+				return;
+			}
 			echo $this -> RefreshObj -> attentionLeague($this -> paraResult['userid'], $this -> paraResult['leagueid']);
 			break;
 		case 'attentionactivity':
+			if(!isset($this -> paraResult['userid'])){
+				echo "USERIDERROR";
+				return;
+			}
+			if(!isset($this -> paraResult['activityid'])){
+				echo "ACTIVITYIDERROR";
+				return;
+			}
 			echo $this -> RefreshObj -> attentionactivity($this -> paraResult['userid'], $this -> paraResult['activityid']);
 			break;
 		case 'comment':
-			echo $this -> RefreshObj -> addComment($this -> paraResult['userid'], $this -> paraResult['receiveid'], $this -> paraResult['receivetype'], $this -> paraResult['content'], isset($this -> paraResult['answer'])?$this -> paraResult['answer'] : 0);
+			if(!isset($this -> paraResult['senderid'])){
+				echo "SENDERIDERROR";
+				return;
+			}
+			echo $this -> RefreshObj -> addComment($this -> paraResult['senderid'], $this -> paraResult['sendertype'] , $this -> paraResult['receiveid'], $this -> paraResult['receivetype'], $_POST['content'], isset($this -> paraResult['commentid'])?$this -> paraResult['commentid'] : 0);
 			break;
 		case 'vote':
+			if(!isset($this -> paraResult['voteid'])){
+				echo "VOTEIDERROR";
+				return;
+			}
+			if(!isset($this -> paraResult['userid'])){
+				echo "USERIDERROR";
+				return;
+			}
+			if(!isset($this -> paraResult['itemid'])){
+				echo "ITENIDERROE";
+				return;
+			}
 			echo $this -> RefreshObj -> vote($this -> paraResult['voteid'], $this -> paraResult['userid'],$this -> paraResult['userip'], $this -> paraResult['itemid']);
 			break;
 		default:
-			echo "error";
+			echo "COMMANDERROR";
 			break;
 		}
 	}
 	public function selectOperate(){
-		switch($this -> paraResult['selecoperate']){
+		switch($this -> paraResult['selectoperate']){
 		case 'refresh':
 			echo $this -> RefreshObj -> refresh();
 			break;
 		case 'getattentionleague':
+			if(!isset($this -> paraResult['userid'])){
+				echo "USERIDERROR";
+				return;
+			}
 			echo $this -> RefreshObj -> getAttentionLeague($this -> paraResult['userid']);
 			break;
 		case 'getattentionactivity':
+			if(!isset($this -> paraResult['userid'])){
+				echo "USERIDERROR";
+				return;
+			}
 			echo $this -> RefreshObj -> getAttentionActivity($this -> paraResult['userid']);
 			break;
 		case 'activitydetail':
+			if(!isset($this -> paraResult['activityid'])){
+				echo "ACTIVITYIDERROR";
+				return;
+			}
 			echo json_encode($this -> RefreshObj -> getActivityInfo($this -> paraResult['activityid']));
 			break;
 		case 'getleagueactivity':
+			if(!isset($this -> paraResult['leagueid'])){
+				echo "LEAGUEIDERROR";
+				return;
+			}
 			echo $this -> RefreshObj -> getLeagueActivity($this -> paraResult['leagueid']);
 			break;
 		case 'leaguezone':
+			if(!isset($this -> paraResult['leagueid'])){
+				echo "LEAGUEIDERROR";
+				return;
+			}
 			echo json_encode($this -> RefreshObj -> getLeagueInfo($this -> paraResult['leagueid']));
 			break;
 		default: 
-			echo "error";
+			echo "SELECTPARAERROR";
 			break;
 		}
 	}

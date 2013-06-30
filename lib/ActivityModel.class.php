@@ -160,7 +160,7 @@ $a=new ActivityModel();
 			return "error";
 		$sql = "INSERT INTO `lg_attention_league` (user_id, league_id) VALUES ('".$userid."', '".$leagueid."')";
 		mysql_query($sql);
-		return "success";
+		return "ATTENTIONLEAGUESUCCESS";
 
 	}
 	public function isAttentionLeague($userid, $leagueid){
@@ -182,7 +182,7 @@ $a=new ActivityModel();
 			return "error";
 		$sql = "INSERT INTO `lg_attention_activity` (user_id, activity_id) VALUES ('".$userid."','".$activityid."')";
 		mysql_query($sql);
-		return "success";
+		return "ATTENTIONACTIVITYSUCCESS";
 	}
 	public function canVote($voteid, $userid, $userip){
 		$sql = "select * from `lg_activity_vote` where `id` = '".$voteid."'";
@@ -196,12 +196,12 @@ $a=new ActivityModel();
 	}
 	public function vote($voteid, $userid, $userip, $itemid){
   		if(!$this -> canVote($voteid,$userid,$userip))
-			return "alreadyvote";
+			return "ALREADYVOTE";
 		$sql = "INSERT INTO `lg_activity_vote_process` (item_id,voterid,voterip,vote_id) VALUES ('".$itemid."','".$userid."','".$userip."','".$voteid."')";
 		mysql_query($sql);
 		$sql = "UPDATE `lg_activity_vote_item` SET `suport_num` = `suport_num`+1";
 		mysql_query($sql);
-		return "success";
+		return "VOTESUCCESS";
 	}
 	public function getComment($receiverid,$receivetype){
 		$sql = "SELECT * FROM `lg_comment_info` WHERE `receiver` = '".$receiverid."' AND `comment_type` = '".$receivetype."' AND `comment_id` = 0";
@@ -218,23 +218,9 @@ $a=new ActivityModel();
 		}
 		return $comment;
 	}
-	public function addComment($senderid, $receiverid, $receivertype, $content, $commentid = 0){
-	 	$sql = "INSERT INTO `lg_comment_info`(content, comment_time, receiver, sender, comment_type, comment_id) VALUES ('".$content."','".date('Y-m-d G:i:s')."','".$receiverid."', '".$senderid."', '".$receivertype."', '".$commentid."')";
+	public function addComment($senderid, $receiverid, $receivertype, $content,$sendertype, $commentid = 0){
+	 	$sql = "INSERT INTO `lg_comment_info`(content, comment_time, receiver, sender, comment_type, comment_id,sender_type) VALUES ('".$content."','".date('Y-m-d G:i:s')."','".$receiverid."', '".$senderid."', '".$receivertype."', '".$commentid."', '".$sendertype."')";
 		mysql_query($sql);
-		return "success";
+		return "ADDCOMMENTSUCCESS";
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
