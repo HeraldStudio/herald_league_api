@@ -54,6 +54,7 @@ class ActivityModel{
 		$result = array();
 		while($rs = mysql_fetch_array($query, MYSQL_ASSOC)){
 			$rs['league_info'] = $this -> getLeagueInfo($rs['league_id']);
+			$rs['comment'] = $this -> getComment($activityid,1);
 			if($rs['class'] == 1){
 				$rs['isvote'] = true;
 			        $sql_vote = "select * from `lg_activity_vote` where `id`='".$rs['id']."' limit 1";
@@ -132,6 +133,7 @@ class ActivityModel{
 		$sql = "select * from `lg_attention_activity` where `user_id`='".$userid."'";
 		$query = mysql_query($sql);
 		$result = array();
+$a=new ActivityModel();
 		while($rs = mysql_fetch_array($query)){
 			$rs['activity_info'] = $this -> getActivityInfo($rs['activity_id']);
 			array_push($result, $rs);
@@ -188,12 +190,39 @@ class ActivityModel{
 		$rs = mysql_fetch_array($query);
 		$sql_process = "SELECT COUNT(*) FROM `lg_activity_vote_process` WHERE `vote_id` = '".$voteid."' AND `voterid` = '".$userid."' AND `voterip` = '".$userip."'";
 		$vote_num = mysql_query($sql_process);
-		if($vote_num < $rs['avaliable_num'])
-			return true;
-		return false;
+		if($vote_num > $rs['avaliable_num'])
+			return false;
+		return true;
 	}
-
-
+	public function vote($voteid, $userid, $userip, $itemid){
+  		if(!$this -> canVote($voteid,$userid,$userip))
+			return "alreadyvote";
+		$sql = "INSERT INTO `lg_activity_vote_process` (item_id,voterid,voterip,vote_id) VALUES ('".$itemid."','".$userid."','".$userip."','".$voteid."')";
+		mysql_query($sql);
+		$sql = "UPDATE `lg_activity_vote_item` SET `suport_num` = `suport_num`+1";
+		mysql_query($sql);
+		return "success";
+	}
+	public function getComment($receiverid,$receivetype){
+		$sql = "SELECT * FROM `lg_comment_info` WHERE `receiver` = '".$receiverid."' AND `comment_type` = '".$receivetype."' AND `comment_id` = 0";
+		$query = mysql_query($sql);
+		$comment = array();
+		while($rscomment = mysql_fetch_array($query, MYSQL_ASSOC)){
+			$sqlAnswer = "SELECT * FROM `lg_comment_info` WHERE `comment_id` = '".$rscomment['id']."'";
+			$queryAnswer = mysql_query($sqlAnswer);
+			$rscomment['answer'] = array();
+			while($rsAnswer = mysql_fetch_array($queryAnswer, MYSQL_ASSOC)){
+				array_push($rscomment['answer'],$rsAnswer);
+			}
+			array_push($comment, $rscomment);
+		}
+		return $comment;
+	}
+	public function addComment($senderid, $receiverid, $receivertype, $content, $commentid = 0){
+	 	$sql = "INSERT INTO `lg_comment_info`(content, comment_time, receiver, sender, comment_type, comment_id) VALUES ('".$content."','".date('Y-m-d G:i:s')."','".$receiverid."', '".$senderid."', '".$receivertype."', '".$commentid."')";
+		mysql_query($sql);
+		return "success";
+	}
 
 
 

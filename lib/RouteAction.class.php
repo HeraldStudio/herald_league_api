@@ -11,6 +11,10 @@ require_once 'ActivityModel.class.php';
 
 class RouteAction{
 	private $paraResult;
+	private $RefreshObj;
+	function __construct(){
+		$this -> RefreshObj = new ActivityModel();
+	}
 	public function main(){
 		$requestUrl = $_SERVER["REQUEST_URI"];
 		$parameter = explode('index.php', $requestUrl);
@@ -24,22 +28,21 @@ class RouteAction{
 		$this -> resolveCommand();
 	}
 	public function resolveCommand(){
-		$RefreshObj = new ActivityModel();
 		switch($this -> paraResult['command']){
 		case 'select':
 			$this -> selectOperate();
 			break;
 		case 'attentionleague':
-			echo $RefreshObj -> attentionLeague($this -> paraResult['userid'], $this -> paraResult['leagueid']);
+			echo $this -> RefreshObj -> attentionLeague($this -> paraResult['userid'], $this -> paraResult['leagueid']);
 			break;
 		case 'attentionactivity':
-			echo $RefreshObj -> attentionactivity($this -> paraResult['userid'], $this -> paraResult['activityid']);
+			echo $this -> RefreshObj -> attentionactivity($this -> paraResult['userid'], $this -> paraResult['activityid']);
 			break;
 		case 'comment':
-			echo "pinglun";
+			echo $this -> RefreshObj -> addComment($this -> paraResult['userid'], $this -> paraResult['receiveid'], $this -> paraResult['receivetype'], $this -> paraResult['content'], isset($this -> paraResult['answer'])?$this -> paraResult['answer'] : 0);
 			break;
 		case 'vote':
-			echo "toupiao";
+			echo $this -> RefreshObj -> vote($this -> paraResult['voteid'], $this -> paraResult['userid'],$this -> paraResult['userip'], $this -> paraResult['itemid']);
 			break;
 		default:
 			echo "error";
@@ -47,25 +50,24 @@ class RouteAction{
 		}
 	}
 	public function selectOperate(){
-		$RefreshObj = new ActivityModel();	
 		switch($this -> paraResult['selecoperate']){
 		case 'refresh':
-			echo $RefreshObj -> refresh();
+			echo $this -> RefreshObj -> refresh();
 			break;
 		case 'getattentionleague':
-			echo $RefreshObj -> getAttentionLeague($this -> paraResult['userid']);
+			echo $this -> RefreshObj -> getAttentionLeague($this -> paraResult['userid']);
 			break;
 		case 'getattentionactivity':
-			echo $RefreshObj -> getAttentionActivity($this -> paraResult['userid']);
+			echo $this -> RefreshObj -> getAttentionActivity($this -> paraResult['userid']);
 			break;
 		case 'activitydetail':
-			echo json_encode($RefreshObj -> getActivityInfo($this -> paraResult['activityid']));
+			echo json_encode($this -> RefreshObj -> getActivityInfo($this -> paraResult['activityid']));
 			break;
 		case 'getleagueactivity':
-			echo $RefreshObj -> getLeagueActivity($this -> paraResult['leagueid']);
+			echo $this -> RefreshObj -> getLeagueActivity($this -> paraResult['leagueid']);
 			break;
 		case 'leaguezone':
-			echo json_encode($RefreshObj -> getLeagueInfo($this -> paraResult['leagueid']));
+			echo json_encode($this -> RefreshObj -> getLeagueInfo($this -> paraResult['leagueid']));
 			break;
 		default: 
 			echo "error";
