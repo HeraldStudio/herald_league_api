@@ -117,6 +117,19 @@
 <tr><td>receivertype</td><td>表示评论或者回复信息的接受者的类型 1表示普通用户 2表示社团用户 3表示相册 4表示照片</td></tr>
 <tr><td>commentid</td><td>表示回复所对应的评论的id</td></tr>
 <table>
+##二,返回数据说明
+###1. 活动列表页面:
+ * {'id':'1','name':'acti_name','league_id':'1','start_time':'2013-06-08 00',
+'end_time':'2013-06-01 00','introduction':'test','release_time':'2013-06-18 00','place':'',
+'league_info':{'league_name':'herald','avatar_address':''}}
+
+###2. 图片URL
+ * 头像`http://herald.seu.edu.cn/herald_league/Uploads/LeagueAvatar/m_s_avatar_address`
+ * 活动小图`http://herald.seu.edu.cn/herald_league/Uploads/ActivityPost/m_s_post_add`
+ * 活动中图`http://herald.seu.edu.cn/herald_league/Uploads/ActivityPost/m_m_post_add`
+ * 活动大图`http://herald.seu.edu.cn/herald_league/Uploads/ActivityPost/m_l_post_add`
+
+
 
 
 
