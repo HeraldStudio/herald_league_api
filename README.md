@@ -2,6 +2,7 @@
 ##一、调用说明
 ###1.URL说明
 访问url:`http://herald.seu.edu.cn/herald_league_api/index.php/para1/value1/para2/value2`
+
 下载图片url:`http://herald.seu.edu.cn/herald_league/Uploads/`
 
 一个参数名对应一个参数值后面以斜线分开。
