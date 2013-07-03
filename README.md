@@ -120,7 +120,7 @@
 ##二,返回数据说明
 ###1. 活动列表页面:
  * {'id':'1','name':'acti_name','league_id':'1','start_time':'2013-06-08 00',
-'end_time':'2013-06-01 00','introduction':'test','release_time':'2013-06-18 00','place':'',
+'end_time':'2013-06-01 00','introduction':'test','release_time':'2013-06-18 00','place':'',"isvote":true,
 'league_info':{'league_name':'herald','avatar_address':''}}
 
 ###2. 图片URL
