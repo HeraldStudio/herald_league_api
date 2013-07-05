@@ -129,7 +129,9 @@
  * 活动中图`http://herald.seu.edu.cn/herald_league/Uploads/ActivityPost/m_m_post_add`
  * 活动大图`http://herald.seu.edu.cn/herald_league/Uploads/ActivityPost/m_l_post_add`
 
-
+###3. 普通活动详情页面:
+ * {'introduction':'test','post_add':'test','comment':[{'content':'222','comment_time':'2013-06-30 12:00:54'
+,'comment_id':'1','sender':'1'}],'comment_num':''}
 
 
 
