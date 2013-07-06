@@ -28,6 +28,7 @@
 <td>
 <ol>
 <li>refresh 刷新10条记录
+<li>getmore 获取更多的10条记录
 <li>getattentionleague 获取用户关注社团的信息
 <li>getattentionactivity 获取用户关注活动的信息
 <li>activitydetail 获取活动详细信息
@@ -93,10 +94,12 @@
 <tr><td>ALREADYVOTE</td><td>已投过票</td></tr>
 <tr><td>ADDCOMMENTSUCCESS</td><td>评论／回复成功</td></tr>
 <tr><td>ISUPTODATE</td><td>当前显示信息已是最新</td></tr>
+<tr><td>NOACTIVITYCANGET</td><td>没有更多活动信息</td></tr>
 </table>
 ###4.参数设置说明
 <table>
 <tr><td>刷新操作</td><td>command selectoperate lastactivityid</td></tr>
+<tr><td>获取更多操作</td><td>command selectoperate lastactivityid</td></tr>
 <tr><td>获取关注社团操作</td><td>command selectoperate userid</td></tr>
 <tr><td>获取关注活动操作</td><td>command selectoperate userid</td></tr>
 <tr><td>获取活动详细信息</td><td>command selectoperate activityid</td></tr>
@@ -139,6 +142,8 @@
 ####1.刷新操作需要补充添加参数lastactivityid
 ####2.活动信息返回中字段intro表示活动简介信息，包含活动开始时间和活动介绍的部分文字
 ####3.返回ISUPTODATE表示活动信息以更新到最新
+####4.获取更多操作URL_/herald_league_api/index.php/command/select/selectoperate/getmore/lastactivityid/2
+####5.返回NOACTIVITYCANGET表示已无根多信息可跟新了
 更新时间2013/07/06
 
 
