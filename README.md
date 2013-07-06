@@ -134,9 +134,11 @@
 ###3. 普通活动详情页面:
  * {'introduction':'test','post_add':'test','comment':[{'content':'222','comment_time':'2013-06-30 12:00:54'
 ,'comment_id':'1','sender':'1'}],'comment_num':''}
+
 ##三,API更新说明
 ###1.刷新操作需要补充添加参数lastactivityid
 ###2.活动信息返回中字段intro表示活动简介信息，包含活动开始时间和活动介绍的部分文字
+更新时间2013/07/06
 
 
 
