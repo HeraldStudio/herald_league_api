@@ -30,6 +30,8 @@
 <li>refresh 刷新10条记录
 <li>getmore 获取更多的10条记录
 <li>getactivity 获取10条活动信息
+<li>getmoreactivitycomment 获取更多评论信息
+<li>getactivitycomment 获取5条评论信息
 <li>getattentionleague 获取用户关注社团的信息
 <li>getattentionactivity 获取用户关注活动的信息
 <li>activitydetail 获取活动详细信息
@@ -111,7 +113,9 @@
 <tr><td>关注社团操作</td><td>command selectoperate userid leagueid</td></tr>
 <tr><td>关注活动操作</td><td>command selectoperate userid activityid</td></tr>
 <tr><td>投票操作</td><td>command userid voteid itemid</td></tr>
-<tr><td>评论操作</td><td>command senderid sendertype receiveid receivetype</td></tr> 
+<tr><td>评论操作</td><td>command senderid sendertype receiveid receivetype</td></tr>
+<tr><td>获取活动评论信息</td><td>command selectoperate activityid</td></tr>
+<tr><td>获取更多活动评论信息</td><td>command selectoperate activityid lastcommentid</td></tr>
 </table>
 (注:回复操作添加commentid 内容post一个content字段)
 #####部分参数解释
@@ -148,6 +152,9 @@
 ####4.获取更多操作`URL_/herald_league_api/index.php/command/select/selectoperate/getmore/lastactivityid/2`
 ####5.返回NOACTIVITYCANGET表示已无根多信息可跟新了
 ####6.`URL_/herald_league_api/index.php/command/select/selectoperate/getactivity` 获取10条活动信息
+####7.`/herald_league_api/index.php/command/select/selectoperate/getactivitycomment/activityid/1`获取活动评论信息
+####8.`/herald_league_api/index.php/command/select/selectoperate/getmoreactivitycomment/activityid/1/lastcommentid/8`获取更多评论信息
+活动评论
 更新时间2013/07/06
 
 
