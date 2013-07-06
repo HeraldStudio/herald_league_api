@@ -28,6 +28,10 @@
 <td>
 <ol>
 <li>refresh 刷新10条记录
+<li>getmore 获取更多的10条记录
+<li>getactivity 获取10条活动信息
+<li>getmoreactivitycomment 获取更多评论信息
+<li>getactivitycomment 获取5条评论信息
 <li>getattentionleague 获取用户关注社团的信息
 <li>getattentionactivity 获取用户关注活动的信息
 <li>activitydetail 获取活动详细信息
@@ -92,10 +96,15 @@
 <tr><td>VOTESUCCESS</td><td>投票成功</td></tr>
 <tr><td>ALREADYVOTE</td><td>已投过票</td></tr>
 <tr><td>ADDCOMMENTSUCCESS</td><td>评论／回复成功</td></tr>
+<tr><td>ISUPTODATE</td><td>当前显示信息已是最新</td></tr>
+<tr><td>NOACTIVITYCANGET</td><td>没有更多活动信息</td></tr>
+<tr><td>PARAERROR</td><td>评论操作缺少参数</td></tr>
 </table>
 ###4.参数设置说明
 <table>
-<tr><td>刷新操作</td><td>command selectoperate</td></tr>
+<tr><td>刷新操作</td><td>command selectoperate lastactivityid</td></tr>
+<tr><td>获取更多操作</td><td>command selectoperate lastactivityid</td></tr>
+<tr><td>获取10条最新活动信息</td><td>command selectoperate</td></tr>
 <tr><td>获取关注社团操作</td><td>command selectoperate userid</td></tr>
 <tr><td>获取关注活动操作</td><td>command selectoperate userid</td></tr>
 <tr><td>获取活动详细信息</td><td>command selectoperate activityid</td></tr>
@@ -103,8 +112,10 @@
 <tr><td>获取社团空间信息</td><td>command selectoperate leagueid</td></tr>
 <tr><td>关注社团操作</td><td>command selectoperate userid leagueid</td></tr>
 <tr><td>关注活动操作</td><td>command selectoperate userid activityid</td></tr>
-<tr><td>投票操作</td><td>command selectoperate userid voteid itemid</td></tr>
-<tr><td>评论操作</td><td>command selectoperate senderid sendertype receiveid receivetype</td></tr> 
+<tr><td>投票操作</td><td>command userid voteid itemid</td></tr>
+<tr><td>评论操作</td><td>command senderid sendertype receiveid receivetype</td></tr>
+<tr><td>获取活动评论信息</td><td>command selectoperate activityid</td></tr>
+<tr><td>获取更多活动评论信息</td><td>command selectoperate activityid lastcommentid</td></tr>
 </table>
 (注:回复操作添加commentid 内容post一个content字段)
 #####部分参数解释
@@ -114,14 +125,15 @@
 <tr><td>senderid</td><td>表示评论或回复信息的发布者的id</td></tr>
 <tr><td>sendertype</td><td>表示评论或者回复信息发布者的类型 1表示普通用户 2表示社团用户</td></tr>
 <tr><td>receiverid</td><td>表示评论或者回复信息的接受者的id</td></tr>
-<tr><td>receivertype</td><td>表示评论或者回复信息的接受者的类型 1表示普通用户 2表示社团用户 3表示相册 4表示照片</td></tr>
+<tr><td>receivertype</td><td>表示评论或者回复信息的接受者的类型 1表示普通用户 2表示社团用户 3表示活动</td></tr>
 <tr><td>commentid</td><td>表示回复所对应的评论的id</td></tr>
+<tr><td>lastactivityid</td><td>表示当前用户查看的最新活动的id</td></tr>
 <table>
 ##二,返回数据说明
 ###1. 活动列表页面:
  * {'id':'1','name':'acti_name','league_id':'1','start_time':'2013-06-08 00',
 'end_time':'2013-06-01 00','introduction':'test','release_time':'2013-06-18 00','place':'',"isvote":true,
-'s_pic_add':'','league_info':{'league_name':'herald','avatar_address':''}}
+'post_add':'','league_info':{'league_name':'herald','avatar_address':''}}
 
 ###2. 图片URL
  * 头像`http://herald.seu.edu.cn/herald_league/Uploads/LeagueAvatar/m_s_avatar_address`
@@ -129,7 +141,29 @@
  * 活动中图`http://herald.seu.edu.cn/herald_league/Uploads/ActivityPost/m_m_post_add`
  * 活动大图`http://herald.seu.edu.cn/herald_league/Uploads/ActivityPost/m_l_post_add`
 
+###3. 普通活动详情页面:
+ * {'introduction':'test','post_add':'test','comment':[{'content':'222','comment_time':'2013-06-30 12:00:54'
+,'comment_id':'1','sender':'1'}],'comment_num':''}
 
+##三,API更新说明
+1.刷新操作需要补充添加参数lastactivityid
+
+2.活动信息返回中字段intro表示活动简介信息，包含活动开始时间和活动介绍的部分文字
+
+3.返回ISUPTODATE表示活动信息以更新到最新
+
+4.获取更多操作`URL_/herald_league_api/index.php/command/select/selectoperate/getmore/lastactivityid/2`
+
+5.返回NOACTIVITYCANGET表示已无根多信息可跟新了
+
+6.`URL_/herald_league_api/index.php/command/select/selectoperate/getactivity` 获取10条活动信息
+
+7.`/herald_league_api/index.php/command/select/selectoperate/getactivitycomment/activityid/1`获取活动评论信息
+
+8.`/herald_league_api/index.php/command/select/selectoperate/getmoreactivitycomment/activityid/1/lastcommentid/8`获取更
+
+多评论信息（活动评论）
+更新时间2013/07/06
 
 
 
