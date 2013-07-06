@@ -147,14 +147,22 @@
 
 ##三,API更新说明
 1.刷新操作需要补充添加参数lastactivityid
+
 2.活动信息返回中字段intro表示活动简介信息，包含活动开始时间和活动介绍的部分文字
+
 3.返回ISUPTODATE表示活动信息以更新到最新
+
 4.获取更多操作`URL_/herald_league_api/index.php/command/select/selectoperate/getmore/lastactivityid/2`
+
 5.返回NOACTIVITYCANGET表示已无根多信息可跟新了
+
 6.`URL_/herald_league_api/index.php/command/select/selectoperate/getactivity` 获取10条活动信息
+
 7.`/herald_league_api/index.php/command/select/selectoperate/getactivitycomment/activityid/1`获取活动评论信息
-8.`/herald_league_api/index.php/command/select/selectoperate/getmoreactivitycomment/activityid/1/lastcommentid/8`获取更多评论信息
-活动评论
+
+8.`/herald_league_api/index.php/command/select/selectoperate/getmoreactivitycomment/activityid/1/lastcommentid/8`获取更
+
+多评论信息（活动评论）
 更新时间2013/07/06
 
 
