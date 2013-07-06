@@ -95,6 +95,7 @@
 <tr><td>ADDCOMMENTSUCCESS</td><td>评论／回复成功</td></tr>
 <tr><td>ISUPTODATE</td><td>当前显示信息已是最新</td></tr>
 <tr><td>NOACTIVITYCANGET</td><td>没有更多活动信息</td></tr>
+<tr><td>PARAERROR</td><td>评论操作缺少参数</td></tr>
 </table>
 ###4.参数设置说明
 <table>
