@@ -18,13 +18,17 @@ class RouteAction{
 	public function main(){
 		$requestUrl = $_SERVER["REQUEST_URI"];
 		$parameter = explode('index.php', $requestUrl);
-		$parameter = $parameter[1];
-		$paraItem = explode('/', $parameter);
-		$paraResult = array();
-		for( $i = 1; isset($paraItem[$i+1]); $i++ ){
-			$this -> paraResult[$paraItem[$i]] = $paraItem[++$i];
+		if(isset($parameter[1])){
+			$parameter = $parameter[1];
+			$paraItem = explode('/', $parameter);
+			$paraResult = array();
+			for( $i = 1; isset($paraItem[$i]) && isset($paraItem[$i+1]); $i++ ){
+				$this -> paraResult[$paraItem[$i]] = $paraItem[++$i];
 		}
 		$this -> resolveCommand();
+		}else{
+			echo "COMMANDERROR";
+		}
 	}
 	public function resolveCommand(){
 		switch($this -> paraResult['command']){
@@ -54,11 +58,11 @@ class RouteAction{
 			echo $this -> RefreshObj -> attentionactivity($this -> paraResult['userid'], $this -> paraResult['activityid']);
 			break;
 		case 'comment':
-			if(!isset($this -> paraResult['senderid'])){
-				echo "SENDERIDERROR";
+			if(!isset($this -> paraResult['senderid']) || !isset($this -> paraResult['sendertype']) || !isset($this -> paraResult['receiverid']) || !isset($this -> paraResult['receivertype'])){
+				echo "PARAERROR";
 				return;
 			}
-			echo $this -> RefreshObj -> addComment($this -> paraResult['senderid'], $this -> paraResult['sendertype'] , $this -> paraResult['receiveid'], $this -> paraResult['receivetype'], $_POST['content'], isset($this -> paraResult['commentid'])?$this -> paraResult['commentid'] : 0);
+			echo $this -> RefreshObj -> addComment($this -> paraResult['senderid'], $this -> paraResult['sendertype'] , $this -> paraResult['receiverid'], $this -> paraResult['receivertype'], $_POST['content'], isset($this -> paraResult['commentid'])?$this -> paraResult['commentid'] : 0);
 			break;
 		case 'vote':
 			if(!isset($this -> paraResult['voteid'])){
@@ -83,7 +87,21 @@ class RouteAction{
 	public function selectOperate(){
 		switch($this -> paraResult['selectoperate']){
 		case 'refresh':
-			echo $this -> RefreshObj -> refresh();
+			if(!isset($this -> paraResult['lastactivityid'])){
+				echo "LASTACTIVITYIDERROR";
+				return;
+			}
+			echo $this -> RefreshObj -> refresh($this -> paraResult['lastactivityid']);
+			break;
+		case 'getmore':
+			if(!isset($this -> paraResult['lastactivityid'])){
+				echo "LASTACTIVITYIDERROR";
+				return;
+			}
+			echo $this -> RefreshObj -> getmore($this -> paraResult['lastactivityid']);
+			break;
+		case 'getactivity':
+			echo $this -> RefreshObj -> getActivity();
 			break;
 		case 'getattentionleague':
 			if(!isset($this -> paraResult['userid'])){
@@ -119,6 +137,20 @@ class RouteAction{
 				return;
 			}
 			echo json_encode($this -> RefreshObj -> getLeagueInfo($this -> paraResult['leagueid']));
+			break;
+		case 'getactivitycomment':
+			if(!isset($this -> paraResult['activityid'])){
+				echo "ACTIVITYIDERROR";
+				return;
+			}
+			echo $this -> RefreshObj -> getactivitycomment($this -> paraResult['activityid']);
+			break;
+		case 'getmoreactivitycomment':
+			if(!isset($this -> paraResult['activityid']) || !isset($this -> paraResult['lastcommentid'])){
+				echo "PARAERROR";
+				return;
+			}
+			echo $this -> RefreshObj -> getMoreComment($this -> paraResult['activityid'], $this -> paraResult['lastcommentid']);
 			break;
 		default: 
 			echo "SELECTPARAERROR";

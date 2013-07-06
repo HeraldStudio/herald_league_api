@@ -25,12 +25,13 @@ class ActivityModel{
 	 *@return json 返回活动信息
 	 *
 	 * */
-	public function refresh(){
-		$sql = "select * from `lg_activity_info` order by `release_time` desc limit ".MESSAGE_NUM."";
+	public function refresh($lastactivityid){
+		$sql = "select * from `lg_activity_info` where `id` > '".$lastactivityid."'order by `id` desc limit ".MESSAGE_NUM."";
 		$query = mysql_query($sql) or die(mysql_error());
 		$result = array();
 		while($rs = mysql_fetch_array($query, MYSQL_ASSOC)){
 			$rs['league_info'] = $this -> getLeagueInfo($rs['league_id']);
+			$rs['intro'] = $rs['start_time']."开始,".substr($rs['introduction'],0,50);
 			if($rs['class'] == 1){
 				$rs['isvote'] = true;
 			}else{
@@ -38,6 +39,44 @@ class ActivityModel{
 			}
 			array_push($result, $rs);
 		}
+		if(empty($result))
+			return "ISUPTODATE";
+		return json_encode($result);
+	}
+	public function getmore($lastactivityid){
+		$sql = "select * from `lg_activity_info` where `id` < '".$lastactivityid."'order by `id` desc limit ".MESSAGE_NUM."";
+		$query = mysql_query($sql) or die(mysql_error());
+		$result = array();
+		while($rs = mysql_fetch_array($query, MYSQL_ASSOC)){
+			$rs['league_info'] = $this -> getLeagueInfo($rs['league_id']);
+			$rs['intro'] = $rs['start_time']."开始,".substr($rs['introduction'],0,50);
+			if($rs['class'] == 1){
+				$rs['isvote'] = true;
+			}else{
+				$rs['isvote'] = false;
+			}
+			array_push($result, $rs);
+		}
+		if(empty($result))
+			return "NOACTIVITYCANGET";
+		return json_encode($result);
+	}
+	public function getActivity(){
+		$sql = "select * from `lg_activity_info` order by `id` desc limit ".MESSAGE_NUM."";
+		$query = mysql_query($sql);
+		$result = array();
+		while($rs = mysql_fetch_array($query, MYSQL_ASSOC)){
+			$rs['league_info'] = $this -> getLeagueInfo($rs['league_id']);
+			$rs['intro'] = $rs['start_time']."开始,".substr($rs['introduction'],0,50);
+			if($rs['class'] == 1){
+				$rs['isvote'] = true;
+			}else{
+				$rs['isvote'] = false;
+			}
+			array_push($result, $rs);
+		}
+		if(empty($result))
+			return "NOACTIVITYCANGET";
 		return json_encode($result);
 	}
 	/**
@@ -133,14 +172,13 @@ class ActivityModel{
 		$sql = "select * from `lg_attention_activity` where `user_id`='".$userid."'";
 		$query = mysql_query($sql);
 		$result = array();
-$a=new ActivityModel();
 		while($rs = mysql_fetch_array($query)){
 			$rs['activity_info'] = $this -> getActivityInfo($rs['activity_id']);
 			array_push($result, $rs);
 		}
 		return json_encode($result);
 	}
-        public function getLeagueActivity($leagueid){
+    public function getLeagueActivity($leagueid){
 		$sql = "select * from `lg_activity_info` where `league_id` = '".$leagueid."' order by `release_time` desc limit ".MESSAGE_NUM."";
 		$query = mysql_query($sql);
 		$result = array();
@@ -204,8 +242,8 @@ $a=new ActivityModel();
 		return "VOTESUCCESS";
 	}
 	public function getComment($receiverid,$receivetype){
-		$sql = "SELECT * FROM `lg_comment_info` WHERE `receiver` = '".$receiverid."' AND `comment_type` = '".$receivetype."' AND `comment_id` = 0";
-		$query = mysql_query($sql);
+		$sql = "SELECT * FROM `lg_comment_info` WHERE `receiver` = '".$receiverid."' AND `receiver_type` = '".$receivetype."' AND `comment_id` = 0";
+		$query = mysql_query($sql) or die(mysql_error());
 		$comment = array();
 		while($rscomment = mysql_fetch_array($query, MYSQL_ASSOC)){
 			$sqlAnswer = "SELECT * FROM `lg_comment_info` WHERE `comment_id` = '".$rscomment['id']."'";
@@ -222,5 +260,64 @@ $a=new ActivityModel();
 	 	$sql = "INSERT INTO `lg_comment_info`(content, comment_time, receiver, sender, comment_type, comment_id,sender_type) VALUES ('".$content."','".date('Y-m-d G:i:s')."','".$receiverid."', '".$senderid."', '".$receivertype."', '".$commentid."', '".$sendertype."')";
 		mysql_query($sql);
 		return "ADDCOMMENTSUCCESS";
+	}
+	public function getactivitycomment($activityid){
+		$sql = "SELECT * FROM `lg_comment_info` where `receiver` = '".$activityid."' AND `receiver_type` = 3 order by `id` desc limit 5";
+		$query = mysql_query($sql);
+		$result = array();
+		while($rs = mysql_fetch_array($query,MYSQL_ASSOC)){
+			$rs['receiverinfo'] = $this -> getLeagueInfo($rs['receiver']);
+			if($rs['sender_type'] == 1){
+				$rs['senderinfo'] = $this -> getLeagueInfo($rs['sender']);
+			}elseif($rs['sender_type'] == 2){
+				$rs['senderinfo'] = $this -> getUserInfo($rs['sender']);
+			}
+			$rs['responseinfo'] = $this -> getResponseInfo($rs['id']);
+			array_push($result,$rs);
+		}
+		return json_encode($result);
+	}
+	public function getMoreComment($activityid, $lastcommentid){
+		$sql = "SELECT * FROM `lg_comment_info` where `receiver` = '".$activityid."' AND `receiver_type` = 3 AND `id` > '".$lastcommentid."'order by `id` desc limit 5";
+		$query = mysql_query($sql);
+		$result = array();
+		while($rs = mysql_fetch_array($query,MYSQL_ASSOC)){
+			$rs['receiverinfo'] = $this -> getLeagueInfo($rs['receiver']);
+			if($rs['sender_type'] == 1){
+				$rs['senderinfo'] = $this -> getLeagueInfo($rs['sender']);
+			}elseif($rs['sender_type'] == 2){
+				$rs['senderinfo'] = $this -> getUserInfo($rs['sender']);
+			}
+			$rs['responseinfo'] = $this -> getResponseInfo($rs['id']);
+			array_push($result,$rs);
+		}
+		return json_encode($result);
+	}
+	private function getResponseInfo($commentid){
+		$sql = "SELECT * FROM `lg_comment_info` WHERE `comment_id` = '".$commentid."'";
+		$query = mysql_query($sql);
+		$result = array();
+		while($rs = mysql_fetch_array($query)){
+			if($rs['receiver_type'] == 1){
+				$rs['receiverinfo'] = $this -> getUserInfo($rs['receiver']);
+			}elseif($rs['receiver_type'] == 2){
+				$rs['receiverinfo'] = $this -> getLeagueInfo($rs['receiver']);
+			}
+			if($rs['sender_type'] == 1){
+				$rs['senderinfo'] = $this -> getLeagueInfo($rs['sender']);
+			}elseif($rs['sender_type'] == 2){
+				$rs['senderinfo'] = $this -> getUserInfo($rs['sender']);
+			}
+			array_push($result,$rs);
+			$this -> getResponseInfo($rs['id']);
+		}
+		return $result;
+	}
+	private function getUserInfo($userid){
+		$sql = "SELECT * FROM `herald_user` WHERE `card_num` = '".$userid."'";
+		mysql_select_db("herald_user_account");
+		$query = mysql_query($sql) or die(mysql_error());
+		mysql_select_db("herald_league");
+		return $rs = mysql_fetch_array($query,MYSQL_ASSOC);
 	}
 }
