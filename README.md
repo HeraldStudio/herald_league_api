@@ -92,10 +92,11 @@
 <tr><td>VOTESUCCESS</td><td>投票成功</td></tr>
 <tr><td>ALREADYVOTE</td><td>已投过票</td></tr>
 <tr><td>ADDCOMMENTSUCCESS</td><td>评论／回复成功</td></tr>
+<tr><td>ISUPTODATE</td><td>当前显示信息已是最新</td></tr>
 </table>
 ###4.参数设置说明
 <table>
-<tr><td>刷新操作</td><td>command selectoperate</td></tr>
+<tr><td>刷新操作</td><td>command selectoperate lastactivityid</td></tr>
 <tr><td>获取关注社团操作</td><td>command selectoperate userid</td></tr>
 <tr><td>获取关注活动操作</td><td>command selectoperate userid</td></tr>
 <tr><td>获取活动详细信息</td><td>command selectoperate activityid</td></tr>
@@ -116,6 +117,7 @@
 <tr><td>receiverid</td><td>表示评论或者回复信息的接受者的id</td></tr>
 <tr><td>receivertype</td><td>表示评论或者回复信息的接受者的类型 1表示普通用户 2表示社团用户 3表示相册 4表示照片</td></tr>
 <tr><td>commentid</td><td>表示回复所对应的评论的id</td></tr>
+<tr><td>lastactivityid</td><td>表示当前用户查看的最新活动的id</td></tr>
 <table>
 ##二,返回数据说明
 ###1. 活动列表页面:
@@ -132,6 +134,9 @@
 ###3. 普通活动详情页面:
  * {'introduction':'test','post_add':'test','comment':[{'content':'222','comment_time':'2013-06-30 12:00:54'
 ,'comment_id':'1','sender':'1'}],'comment_num':''}
+##三,API更新说明
+###1.刷新操作需要补充添加参数lastactivityid
+###2.活动信息返回中字段intro表示活动简介信息，包含活动开始时间和活动介绍的部分文字
 
 
 
