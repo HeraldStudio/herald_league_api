@@ -107,8 +107,8 @@
 <tr><td>获取社团空间信息</td><td>command selectoperate leagueid</td></tr>
 <tr><td>关注社团操作</td><td>command selectoperate userid leagueid</td></tr>
 <tr><td>关注活动操作</td><td>command selectoperate userid activityid</td></tr>
-<tr><td>投票操作</td><td>command selectoperate userid voteid itemid</td></tr>
-<tr><td>评论操作</td><td>command selectoperate senderid sendertype receiveid receivetype</td></tr> 
+<tr><td>投票操作</td><td>command userid voteid itemid</td></tr>
+<tr><td>评论操作</td><td>command senderid sendertype receiveid receivetype</td></tr> 
 </table>
 (注:回复操作添加commentid 内容post一个content字段)
 #####部分参数解释
@@ -118,7 +118,7 @@
 <tr><td>senderid</td><td>表示评论或回复信息的发布者的id</td></tr>
 <tr><td>sendertype</td><td>表示评论或者回复信息发布者的类型 1表示普通用户 2表示社团用户</td></tr>
 <tr><td>receiverid</td><td>表示评论或者回复信息的接受者的id</td></tr>
-<tr><td>receivertype</td><td>表示评论或者回复信息的接受者的类型 1表示普通用户 2表示社团用户 3表示相册 4表示照片</td></tr>
+<tr><td>receivertype</td><td>表示评论或者回复信息的接受者的类型 1表示普通用户 2表示社团用户 3表示活动</td></tr>
 <tr><td>commentid</td><td>表示回复所对应的评论的id</td></tr>
 <tr><td>lastactivityid</td><td>表示当前用户查看的最新活动的id</td></tr>
 <table>
