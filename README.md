@@ -168,8 +168,8 @@
 7.`/herald_league_api/index.php/command/select/selectoperate/getactivitycomment/activityid/1`获取活动评论信息
 
 8.`/herald_league_api/index.php/command/select/selectoperate/getmoreactivitycomment/activityid/1/lastcommentid/8`获取更
-
 多评论信息（活动评论）
+
 更新时间2013/07/06
 
 
