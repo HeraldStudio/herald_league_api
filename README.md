@@ -145,6 +145,13 @@
  * {'introduction':'test','post_add':'test','comment':[{'content':'222','comment_time':'2013-06-30 12:00:54'
 ,'comment_id':'1','sender':'1'}],'comment_num':''}
 
+###4. 更多留言、评论
+ * [{'content':'222','comment_time':'2013-06-30 12:00:54','comment_id':'1','sender':'1'}]
+
+###5. 社团简介
+ * {"introduce":"club intro",'comment_num':'10','comment':[{'content':'222','comment_time':'2013-06-30 12:00:54',
+ 'comment_id':'1','sender':'1'}],"class":"1","email":"herald@gmail.com","phone":"1585022222","place":"p"}
+
 ##三,API更新说明
 1.刷新操作需要补充添加参数lastactivityid
 
