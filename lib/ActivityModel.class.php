@@ -94,6 +94,7 @@ class ActivityModel{
 		while($rs = mysql_fetch_array($query, MYSQL_ASSOC)){
 			$rs['league_info'] = $this -> getLeagueInfo($rs['league_id']);
 			$rs['comment'] = $this -> getComment($activityid,1);
+			$rs['comment_num'] = count($rs['comment']);
 			if($rs['class'] == 1){
 				$rs['isvote'] = true;
 			        $sql_vote = "select * from `lg_activity_vote` where `id`='".$rs['id']."' limit 1";

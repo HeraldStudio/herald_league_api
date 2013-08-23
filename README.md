@@ -110,8 +110,8 @@
 <tr><td>获取活动详细信息</td><td>command selectoperate activityid</td></tr>
 <tr><td>获取特定社团活动</td><td>command selectoperate leagueid</td></tr>
 <tr><td>获取社团空间信息</td><td>command selectoperate leagueid</td></tr>
-<tr><td>关注社团操作</td><td>command selectoperate userid leagueid</td></tr>
-<tr><td>关注活动操作</td><td>command selectoperate userid activityid</td></tr>
+<tr><td>关注社团操作</td><td>command userid leagueid</td></tr>
+<tr><td>关注活动操作</td><td>command userid activityid</td></tr>
 <tr><td>投票操作</td><td>command userid voteid itemid</td></tr>
 <tr><td>评论操作</td><td>command senderid sendertype receiveid receivetype</td></tr>
 <tr><td>获取活动评论信息</td><td>command selectoperate activityid</td></tr>
@@ -170,7 +170,9 @@
 8.`/herald_league_api/index.php/command/select/selectoperate/getmoreactivitycomment/activityid/1/lastcommentid/8`获取更
 多评论信息（活动评论）
 
-更新时间2013/07/06
+9.api文档更新，修复了关注社团参数bug
+
+更新时间2013/08/13
 
 
 
